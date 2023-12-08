@@ -1,30 +1,29 @@
+let totalCarrinho = 0;
+limpar();
+
 function adicionar() {
-    let totalInicial = document.getElementById('valor-total').outerText;
-    totalInicial = parseInt(totalInicial.slice(2,totalInicial.length));
     let quantidade = document.getElementById('quantidade').value;
     if (quantidade<1) {
         alert('Por favor, informe a quantidade.');
     } else {
         let itemSelecionado = document.getElementById('produto').value;
-        let fimNomeProduto = itemSelecionado.indexOf('-')-1;
-        let produto = itemSelecionado.slice(0,fimNomeProduto);
-        let inicioValor = fimNomeProduto+5;
-        let valorItem = itemSelecionado.slice(inicioValor,itemSelecionado.length);
-        let valorTotal = parseInt(valorItem)*quantidade;
-        let listaProdutos = document.getElementById('lista-produtos');
+        let nomeProduto = itemSelecionado.split(' -')[0];
+        let valorUnitario = itemSelecionado.split('R$')[1];
+        let subTotal = valorUnitario * quantidade;
         let itemHTML = `<section class="carrinho__produtos__produto">
-            <span class="texto-azul">${quantidade}x</span> ${produto} <span class="texto-azul">
-            R$${valorTotal}</span></section>`;
+            <span class="texto-azul">${quantidade}x</span> ${nomeProduto} <span class="texto-azul">
+            R$${subTotal}</span></section>`;
+        let listaProdutos = document.getElementById('lista-produtos');
         listaProdutos.innerHTML += itemHTML;
-        let totalNovo = totalInicial + valorTotal;
-        let valorCarrinho = document.getElementById('valor-total');
-        valorCarrinho.innerHTML = 'R$' + totalNovo;
+        totalCarrinho += subTotal;
+        let campoTotal = document.getElementById('valor-total');
+        campoTotal.innerHTML = 'R$' + totalCarrinho;
+        document.getElementById('quantidade').value = '';
     }
 }
 
 function limpar() {
-    let listaProdutos = document.getElementById('lista-produtos');
-    listaProdutos.innerHTML = '';
-    let valorCarrinho = document.getElementById('valor-total');
-    valorCarrinho.innerHTML = 'R$0';
+    totalCarrinho = 0;
+    document.getElementById('lista-produtos').innerHTML = '';
+    document.getElementById('valor-total').innerHTML = 'R$0';
 }
